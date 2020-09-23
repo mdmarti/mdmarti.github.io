@@ -6,15 +6,15 @@ highlighter:      pygments
 permalink:        pretty
 
 # Setup
-title:            Hyde
-tagline:          'A Jekyll theme'
-description:      'A brazen two-column <a href="http://jekyllrb.com" target="_blank">Jekyll</a> theme that pairs a prominent sidebar with uncomplicated content. Made by <a href="https://twitter.com/mdo" target="_blank">@mdo</a>.'
-url:              http://hyde.getpoole.com
+title:            Miles Martinez
+tagline:          'Who even am I!'
+description:      'Currently a graduate student @<a href="http://scholars.duke.edu" target="_blank">Duke University</a> studying ~cognitive neuroscience~ <br> This is also me but dumb <a href="https://twitter.com/Mr__Kilometers" target="_blank">@Mr__Kilometers</a>.'
+url:              http://mdmarti.github.io
 baseurl:          /
 
 author:
-  name:           'Mark Otto'
-  url:            https://twitter.com/mdo
+  name:           'Miles Martinez'
+  url:            https://twitter.com/Mr__Kilometers
 
 paginate:         5
 
@@ -22,4 +22,4 @@ paginate:         5
 version:          2.1.0
 
 github:
-  repo:           https://github.com/poole/hyde
+  repo:           https://github.com/mdmarti/mdmarti.github.io
