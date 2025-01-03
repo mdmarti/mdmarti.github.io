@@ -4,7 +4,7 @@ email: miles.martinez@duke.edu
 url: https://github.com/jeromelachaud/freelancer-theme
 description: "A website for Miles Martinez's accomplishments."
 keywords: "neuroscience, computational, deep learning, representation learning, motor learning, systems neuroscience, computational neuroscience"
-skills: "PhD Candidate, Computational Neuroscientist"
+skills: "PhD Candidate in ECE, Computational Neuroscientist"
 meta_author: Martinez Miles
 
 # Google webmaster tools
@@ -25,11 +25,11 @@ disqus_shortname: myshortname
 
 # Color settings (hex-codes without the leading hash-tag) 
 color:
-  primary: 8884FF #80B3FF
-  primary-rgb: "136,132,255" #"128,179,255"
-  background-2: 01295F # royal blue
-  secondary: C84E00 #FD6E8A
-  secondary-dark: 69140E #A2122F
+  primary: 00592e #80B3FF #Dusky green
+  primary-rgb: "0,89,46" #"128,179,255"
+  background-2: 00592e #80B3FF #Dusky green 2ee670 # royal blue # sea green
+  secondary:  003e8a # Vandar Poel's blue eugenia red #ffffff
+  secondary-dark:  2ee670 # royal blue # sea green ff331a # peach red #ffe600 #FD6E8A #apricot yellow
   tertiary: 
 
 # Footer settings
@@ -60,10 +60,12 @@ credits: 'Website built using Freelancer: a free to use, open source Bootstrap t
 markdown: kramdown
 permalink: pretty
 
-#for posts
+#for  posts
 defaults:
   - scope:
       path: ""
       type: "posts"
     values:
       permalink: ""
+
+
