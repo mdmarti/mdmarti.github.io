@@ -1,7 +1,7 @@
 # Site settings
-title: Miles Martinez
+title: Miles Martinez's Personal Site
 description: >
-  A simple, minimal Jekyll theme for a personal web page and blog, focusing on white space and readability
+  A site for me, Miles Martinez, to talk about myself and the things I do
 
 baseurl: "" # the subpath of your site, e.g. /blog/
 url: "https://mdmarti.github.io" # the base hostname & protocol for your site
@@ -9,7 +9,7 @@ url: "https://mdmarti.github.io" # the base hostname & protocol for your site
 author:
   fullname: Miles Martinez
   github: mdmarti
-  linkedin: linkdin
+  linkedin: miles-martinez-00a496123
   email: miles.martinez@duke.edu
 
 
