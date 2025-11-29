@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Résumé
+title: CV
 subtitle: An awesome person
 ---
 
