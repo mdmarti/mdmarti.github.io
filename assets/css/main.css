@@ -226,6 +226,16 @@
 
   }
 
+/* columns */
+  .row {
+    display: flex;
+  }
+
+  .column {
+    flex: 50%;
+  }
+
+
 /* =Glitch effect, Source: http://codepen.io/bulby97/pen/fcvay *//*************************************************************/
   .glitch {
     position: relative;
