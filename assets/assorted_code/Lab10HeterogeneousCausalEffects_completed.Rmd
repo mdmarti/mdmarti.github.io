@@ -1,0 +1,212 @@
+---
+title: "Lab 10 Estimating Heterogeneous Causal Effects"
+author: "Miles Martinez"
+date: "2024-03-31"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Estimating Heterogeneous Causal Effects
+Today we'll be discussing how to estimate a causal effect of a treatment on some outcome variable.
+
+In experiments, we tend to split our participants into multiple groups: a treatment (or multiple treatment) and control groups. Our goal is to estimate the effect of that treatment on the outcomes of our participants -- the difference between our two groups that was specifically due to our treatment, and how the effect of that treatment varies based on the characteristics of our sample population. These treatment effects are known as **Heterogeneous Causal Effects** because the effect of treatment varies based on external factors -- it is heterogeneous. To put this into math:
+
+Let's say we have a binary treatment variable $Z$. Each of our participants has some set of characteristics/covariates $X$, and we are interested in their outcome $Y$. We want to estimate the conditional average treatment effect (CATE) for each subject: Given the covariates, what is the difference between their outcome if they had received treatment vs. their outcome if they had not? $$\text{CATE} = \mathbb{E}[Y_{z=1} - Y_{z=0}|X] = \tau(X)$$
+
+**Q1. Why should we care about heterogeneous causal effects?**
+
+Populations in the real world are heterogeneous! And treatments (medical, economic, political, etc.) affect those different populations differently. If we want to ensure the best outcomes for everyone, we need to estimate these effects
+
+
+**Q2. What are some challenges with estimating this effect?**
+The main challenge with estimating this effect is that for each participant, we only ever observe either $Z=1$ or $Z=0$. So we can never directly estimate CATE from data.
+
+## Assumptions and problem setup
+
+A critical assumption that helps people make progress on this problem, statistically, is unconfoundedness. This means that whether or not a participant is assigned to treatment or non-treatment is independent of their response to treatment, conditioned on their covariates. We can write this as:
+
+$$\{Y_{Z=1}, Y_{Z=0}\} \perp\!\!\!\!\perp Z_i | X_i$$
+
+Because of this assumption, we can simplify the CATE to
+
+
+\begin{align}
+\tau(X) & = \mathbb{E}[Y_{Z=1}|Z=1,X] - \mathbb{E}[Y_{Z=0}|Z=0,X] \\
+&= \mathbb{E}[Y|Z=1,X] - \mathbb{E}[Y|Z=0,X] = \mu_1(X) - \mu_0(X)
+\end{align}
+
+
+As a result, we can choose to either model $\tau(x)$ as a whole, or $\mu_1,\mu_2$ separately.
+Influential early work demonstrated that if this unconfoundedness assumption holds, then treatment and potential outcome are also independent conditioned on the **propensity score**: the expected value of $W$ given $X$. If $X$ is a set of discrete variables, you can think of it as the probability that a participant with a given set of characteristics receives treatment. The majority of work therefore works towards estimating this propensity score-- since if you can estimate that from data, you can estimate your CATE! This is because
+$$
+\mathbb{E}[ZY|X] = \mathbb{E}[ZY_{Z=1}|X] = \mathbb{E}[Z|X]\mathbb{E}[Y_{Z=1}|X] =  \mathbb{E}[Z|X] \mathbb{E}[Y|Z=1,X]
+$$
+Which also means:
+$$
+\mathbb{E}[Y|Z=1,X] = \frac{\mathbb{E}[ZY|X]}{\mathbb{E}[Z|X]} = \mu_1(x)
+$$
+Similarly,
+$$
+\mathbb{E}[Y|Z=0,X] = \frac{\mathbb{E}[(1-Z)Y|X]}{1-\mathbb{E}[Z|X]} = \mu_0(x)
+$$
+Which also means:
+$$
+\tau (x) = \mathbb{E}\bigg[ Y_i \bigg( \frac{Z_i}{\mathbb{E}[Z|X])} - \frac{1 - Z_i}{1 - \mathbb{E}[Z|X]}\bigg) \bigg| X_i = x \bigg]
+$$
+
+Let's test this out with a toy example! Let's say $X$ has three groups, 1,2, and 3. The probability of receiving treatment in each group is 0.4. $Y(Z = 1,X=1) \sim \mathcal{N}(4,1), Y(Z=1,X=2) \sim \mathcal{N}(3,1), Y(Z=1,X=3) \sim \mathcal{N}(2,1); Y(Z=0) \sim \mathcal{N}(1,2)$. Under this setup, $\tau(1) \approx 3, \tau(2) \approx 2, \tau(3) \approx 1$. How close do we get to these values just by estimating propensity scores?
+
+```{r Generating Data, echo=FALSE}
+set.seed(2024)
+nPerGroup = 1000
+X = c(rep(1,nPerGroup), rep(2,nPerGroup),rep(3,nPerGroup))
+Z = rbinom(length(X),1,0.4)
+Y = Z * rnorm(length(X),mean=5-X,sd=1) + (1 - Z) * rnorm(length(X),mean=1,sd=2)
+
+calculate_tau <- function(X,Y,Z,propensity){
+  # Calculates tau based on the above formula. Expects
+  # to only receive data for one value of X at a time
+  tau = mean(Y * (Z/propensity - (1-Z)/(1-propensity)))
+}
+```
+Your turn!! Use the above data, calculate propensity scores, then use calculate_tau() to see how well we do on these data.
+```{r Exercise 1, echo=TRUE}
+propensities = c(mean(Z[X==1]),mean(Z[X==2]),mean(Z[X==3]))
+t1 = calculate_tau(X[X==1],Y[X==1],Z[X==1],propensities[1])
+t2 = calculate_tau(X[X==2],Y[X==2],Z[X==2],propensities[2])
+t3 = calculate_tau(X[X==3],Y[X==3],Z[X==3],propensities[3])
+print(paste(t1,t2,t3))
+
+```
+## Scaling up
+
+So, we can calculate $\tau$ pretty accurately in the discrete X case.... but oftentimes, our X attributes are continuous. Even in the discrete case, the more attributes our population has, the more propensities we will have to calculate, and the fewer samples we will have to calculate those propensity scores. [Wager & Athey](https://arxiv.org/abs/1510.04342) take the approach of *not* explicitly estimating this score, and instead use random forests to approximate $\tau(x)$ on its own. Recall that to train a regression tree, we recursively split our features ($X$) to partition it into leaves $L$, each of which has a few samples (that have roughly identically distributed Y's). For our test data, we predict values by identifying the leaves our test points belong to, then get predictions 
+$$\hat{\mu}(x) = \frac{1}{|\{i: X_i \in L(x)\}|}\sum_{\{i: X_i \in L(x)\}}Y_i$$
+Wager & Athey proposed using this procedure to estimate the treatment effect. If leaves are small enough such that $(Y_i,W_i)$ pairs had come from a randomized experiment, they propose to create trees, then estimate the treatment effect as
+$$
+\hat{\tau}(x)=\frac{1}{|\{i: W_i = 1, X_i \in L(x)\}|}\sum_{\{i: W_i = 1, X_i \in L(x)\}}Y_i \;-\;\; \frac{1}{|\{i: W_i = 0, X_i \in L(x)\}|}\sum_{\{i: W_i = 0, X_i \in L(x)\}}Y_i
+$$
+This procedure can easily overfit on a dataset, so like with a random *forest*, they propose fitting a forest of B "causal" trees, then estimating $\hat{\tau}(x) = \frac{1}{B}\sum_{b=1}^B\tau_b(x)$. Returning to our notation from the very beginning, they avoid modeling $\mu_1(x),\mu_0(x)$ and directly model $\tau(x)$
+
+## A more complicated approach with trees
+
+Alternatively, [Hahn, Murray, and Carvahlo](https://projecteuclid.org/journals/bayesian-analysis/volume-15/issue-3/Bayesian-Regression-Tree-Models-for-Causal-Inference--Regularization-Confounding/10.1214/19-BA1195.full) model $\mu_1(x)$ and $\mu_0(x)$. They treat $\mu_i(x) = f(x) + \tau(x)z$. This lets them put different priors on $f(x), \tau(x)$. They further specify the model as $\mu_i(x) = f(x,\hat{\pi}(x)) + \tau(x)z$,where $\hat{\pi}(x)$ is an estimate of the propensity score. This helps find better solutions in cases such as medical trials, where physicians are more likely to assign treatment to patients with worse expected outcomes without treatment (in other words, based on an implicit estimate of $\mu_0(x))$. The authors impose [Bayesian Additive Regression Tree (BART)](https://projecteuclid.org/journals/annals-of-applied-statistics/volume-4/issue-1/BART-Bayesian-additive-regression-trees/10.1214/09-AOAS285.full) priors on $f(),\tau$ -- which has the effect of regularizing the expected depth and probability of a node splitting in each tree, regularizing towards trees in which the treatment effect is homogeneous.
+
+**Q3. Why would you want to regularize towards homogeneous treatment effects?**
+
+## Fitting some trees
+
+Let's generate some data and try fitting some trees! To do this, we'll need the `grf`,`bcf`,`BayesTree`, and `ggplot2` libraries.
+
+```{r Installing packages, eval=FALSE, include=FALSE}
+install.packages(c('grf','bcf','BayesTree','ggplot2'))
+
+```
+
+```{r Loading packages, include=FALSE}
+library(grf)
+library(bcf)
+library(BayesTree)
+library(ggplot2)
+```
+
+```{r Generating data}
+n = 1000
+X = rnorm(n)
+X = sort(X)
+ps<-plogis(0.5*X)
+Z = rbinom(n,1,ps)
+Y0 = Y1 = numeric(n)
+Y0 = 1 + 2 * sin(X) * sqrt(abs(X)) + 0.4 * X^2 + 0.6*X + rnorm(n,0,0.5)
+Y1 = 1 + 2 * sin(X) * sqrt(abs(X)) + 0.4 * X^2 + 0.6*X +
+4 + 0.3*X + 0.1*X^2 + rnorm(n,0,0.5)
+Y = Z*Y1 + (1-Z)*Y0
+set1 = which(Z==1)
+set0 = which(Z==0)
+
+## Define true treatment effect
+hte = function(X){
+4+0.3*X+0.1*X^2
+}
+#test set
+X.test = seq(-3,3,length.out=1000)
+
+### TO-DO: estimate propensity score using glm (what glm have we covered
+## that can give you P(Z=1|X)?)
+
+ps.model = glm(Z~X,family = binomial(link = "logit"))
+ps.est = predict.glm(ps.model,as.data.frame(X),type = "response")
+```
+
+
+```{r Fitting and visualizing causal forest}
+#causal forest
+cf = causal_forest(as.matrix(X),Y,Z,num.trees=2000)
+### How does changing the number of trees affect treatment effect estimates? have
+### students discuss with their neighbors
+cf_pred = predict(cf,newdata = as.matrix(X.test),
+
+estimate.variance = T)
+cate_est_cf = cf_pred$predictions
+#confidence level
+cate_ucl_cf = cate_est_cf + 1.96*sqrt(cf_pred$variance.estimates)
+cate_lcl_cf = cate_est_cf - 1.96*sqrt(cf_pred$variance.estimates)
+cf_data = as.data.frame(cbind(X.test,cate_est_cf,cate_ucl_cf,cate_lcl_cf))
+
+
+ggplot(cf_data, aes(X.test, cate_est_cf)) + geom_line() +
+  geom_ribbon(aes(ymin = cate_lcl_cf, ymax = cate_ucl_cf), alpha = 0.2) +
+  geom_function(fun = hte, colour = "red")
+```
+
+```{r Fitting BART, modeling tau(X) directly }
+
+bart_s = bart(cbind(Z,X),Y,x.test = rbind(cbind(1,X.test),cbind(0,X.test)),
+ndpost=1000,nskip=500,verbose=F,power=2,base=0.95,ntree=200)
+#### The power parameter and the base parameter correspond to the depth penalty
+### and the splitting probability discussed earlier, respectively. How does changing these affect your results? what about the number of trees? Have students try this out with their neighbors
+
+y_post_s = bart_s$yhat.test
+cate_post_s = y_post_s[,1:1000] - y_post_s[,1001:2000]
+cate_est_s = colMeans(cate_post_s)
+cate_ucl_s = apply(cate_post_s,2,quantile,probs=0.975)
+cate_lcl_s = apply(cate_post_s,2,quantile,probs=0.025)
+s_data = as.data.frame(cbind(X.test,cate_est_s,cate_ucl_s,cate_lcl_s))
+ggplot(s_data, aes(X.test, cate_est_s)) + geom_line() +
+geom_ribbon(aes(ymin = cate_lcl_s, ymax = cate_ucl_s), alpha = 0.2) +
+geom_function(fun = hte, colour = "red")
+```
+
+```{r Fitting BART, separate models for mu}
+bart_t1 = bart(X[set1],Y[set1],x.test = X.test,
+ndpost=1000,nskip=500,verbose=F)
+bart_t0 = bart(X[set0],Y[set0],x.test = X.test,
+ndpost=1000,nskip=500,verbose=F)
+cate_post_t = bart_t1$yhat.test - bart_t0$yhat.test
+cate_est_t = colMeans(cate_post_t)
+cate_ucl_t = apply(cate_post_t,2,quantile,probs=0.975)
+cate_lcl_t = apply(cate_post_t,2,quantile,probs=0.025)
+t_data = as.data.frame(cbind(X.test,cate_est_t,cate_ucl_t,cate_lcl_t))
+ggplot(t_data, aes(X.test, cate_est_t)) + geom_line() +
+  geom_ribbon(aes(ymin = cate_lcl_t, ymax = cate_ucl_t), alpha = 0.2) +
+  geom_function(fun = hte, colour = "red")
+
+```
+
+```{r Fitting Bayesian causal forest }
+
+bcf_fit = bcf(Y, Z, as.matrix(X), as.matrix(X), ps.est, nburn=2000, nsim=1000)
+cate_post_bcf = bcf_fit$tau
+cate_est_bcf = colMeans(cate_post_bcf)
+cate_ucl_bcf = apply(cate_post_bcf,2,quantile,probs=0.975)
+cate_lcl_bcf = apply(cate_post_bcf,2,quantile,probs=0.025)
+bcf_data = as.data.frame(cbind(X,cate_est_bcf,cate_ucl_bcf,cate_lcl_bcf))
+ggplot(bcf_data, aes(X, cate_est_bcf)) + geom_line() +
+  geom_ribbon(aes(ymin = cate_lcl_bcf, ymax = cate_ucl_bcf), alpha = 0.2) +
+  geom_function(fun = hte, colour = "red")
+```
