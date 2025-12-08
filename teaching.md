@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Teaching
-subtitle: 
+subtitle: 🚧🚧🚧 Under construction 🚧🚧🚧
 
 ---
 
@@ -23,19 +23,22 @@ My development
 
 ## Cognitive Neuroscience Research Internship (CNRI): Intro to Python (Duke)
 
+[CNRI Intro to Python Resources](https://github.com/Duke-CNRI)
+
+
 ## Probabilistic Machine Learning (Duke, STA 561D/ECE 682D/COMPSCI 571D)
 
 [Google CoLab notebook on regression variants with cross-validation](https://colab.research.google.com/drive/1_o01PJLyaQ-j5mZAGyxbRU8bA66hvOHR?usp=sharing#scrollTo=dd89756a)
 
-<span style="float: left; "><a href="{{ '/assets/assorted_code/Lab10HeterogenousCausalEffects_class.Rmd' | prepend: site.baseurl }}"> R Markdown lab on estimating heterogeneous causal effects (download) </a> </span>
-
-
+<span style="float: left; "><a href="{{ '/assets/assorted_code/Lab10HeterogenousCausalEffects_class.Rmd' | prepend: site.baseurl }}"> R Markdown lab on estimating heterogeneous causal effects (download) </a> </span>\\
 
 ## Vector Space Methods with Applications (Duke, ECE 586)
 
 # Workshops
 
 ## Duke Institute for Brain Sciences (DIBS) Methods Meetings
+
+[DIBS Methods Meetings](https://dibsmethodsmeetings.github.io/)
 
 ## CNRI Conceptual Classes
 
