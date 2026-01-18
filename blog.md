@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Blog
+title: Assorted Goods
 subtitle: 🚧🚧🚧 Under construction 🚧🚧🚧
 ---
 
