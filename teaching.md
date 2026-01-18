@@ -5,7 +5,7 @@ subtitle: 🚧🚧🚧 Under construction 🚧🚧🚧
 
 ---
 
-To skip directly to my class experience and example materials, [click here](#classes); to skip to workshops-style content I have led, [click here](#workshops); for mentoring experience, [click here](#mentoring).
+To skip directly to my class experience and example materials, [click here](#classes); to skip to workshop-style content I have led, [click here](#workshops); for mentoring experience, [click here](#mentoring).
 
 # Philosophy
 When I was being trained in cognitive neuroscience in undergrad, I was frustrated at the opacity of the classes and training in computational methods. Part of my goal in pursuing a degree in electrical and computer engineering was to do better: to help train the next generation of computational cognitive neuroscientists in cutting-edge methods. **My primary goal as an instructor** is to make computational methods accessible, interesting, and applicable to young researchers across multiple disciplines. To that end, I focus on using active learning tools to ensure students stay engaged, project-based assessment so that students get to see their knowledge in action, and team-based learning so that students can build collaborative experience and communication skills. Outside of the classroom, I mentor students interested in computational neuroscience in active research projects investigating how birds learn to sing. I help them build a strong background in both systems neuroscience and computational modeling, such that they are prepared to continue this work in the future and, if they choose not to, can become fluent in the language of computational neuroscience.
@@ -36,7 +36,8 @@ In Probabilistic Machine Learning, I acted as a TA in charge of organizing homew
 
 [Google CoLab notebook on regression variants with cross-validation](https://colab.research.google.com/drive/1_o01PJLyaQ-j5mZAGyxbRU8bA66hvOHR?usp=sharing#scrollTo=dd89756a)
 
-<span style="float: left; "><a href="{{ '/assets/assorted_code/Lab10HeterogenousCausalEffects_class.Rmd' | prepend: site.baseurl }}"> R Markdown lab on estimating heterogeneous causal effects (download) </a> </span>\\
+<a href="{{ '/assets/assorted_code/Lab10HeterogenousCausalEffects_class.Rmd' | prepend: site.baseurl }}"> R Markdown lab on estimating heterogeneous causal effects (download) </a> 
+
 
 ## Vector Space Methods with Applications (Duke, ECE 586)
 
@@ -60,4 +61,4 @@ This also means communicating when goals, experience, or interests are not align
 In the Pearson lab, I have had the pleasure of mentoring two very talented undergraduate students and working with them in collaboration with the Mooney lab on analyzing Dr. Jiaxuan Qi's superb calcium imaging dataset. As this is a (relatively) niche subfield, we work with tools that are not commonly covered in undergraduate coursework. As a result, over the past two years I have worked with them to discuss the field of songbird vocal learning, the context for this project and the importance of the region we are studying, introduced them to analysis methods such as bootstrapping, partial cross-correlation, regularized regression, & principal component analysis, and built their familiarity with working with extremely large scientific datasets. We have weekly meetings to check in on their progress and regularly check in over slack in the meantime if any questions/issues arise. I think that they have grown a lot in their knowledge and I trust them with the analyses we are carrying out, and I am excited to see what they accomplish in the future!
 
 ## CNRI
-The third aspect of CNRI is the pair mentorship, during which students 
+The third aspect of CNRI is the pair mentorship, during which pairs of students are partnered with a pair of graduate students to work on active projects in the graduate students' labs. This is a more structured mentorship than in a typical lab setting, as again, these are students that specifically have no experience with research prior to this program, and as such the elements of mentoring mentioned in my philosophy have been vital in this setting; in particular, setting expectations and tailoring the experience, workload, and projects to the interests of my students. Over my time with CNRI I have mentored 8 students, primarily introducing them to common neuroscience analysis methods with the application of the zebra finch calcium imaging dataset. These students have gone from no prior background with computational tools or this area of expertise to putting together a final presentation with applications of computational methods to zebra finch song learning and, in more recent years, a fully developed poster. Working with CNRI has been incredibly rewarding --- I have been able to connect my students with other labs that fit their interests better, and have written multiple letters of recommendation to support them as they continue along their research journeys.
