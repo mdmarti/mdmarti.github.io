@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Blog
-subtitle: 🚧🚧🚧 Under construction 🚧🚧🚧
+title: Assorted Goods
+subtitle:
 ---
 
 <div>

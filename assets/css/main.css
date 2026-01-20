@@ -7,7 +7,7 @@
     background-color: #FFF; }
 
   a {
-    color: #57A;
+    color: #16a085; /*57A*/
     font-weight: bold;
     text-decoration: none; }
 
@@ -42,7 +42,7 @@
       font-weight: 400; }
 
   strong {
-    color: #16a085; }
+    color: rgb(51, 82, 129); } /*16a085 */
 
   .wrapper {
     max-width: 800px;
