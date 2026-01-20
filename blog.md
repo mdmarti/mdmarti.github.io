@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Assorted Goods
-subtitle: 🚧🚧🚧 Under construction 🚧🚧🚧
+subtitle:
 ---
 
 <div>
