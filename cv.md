@@ -12,7 +12,7 @@ subtitle:
 #### Duke University <span style="float: right; ">2020-2026</span>  
 **PhD Electrical and Computer Engineering**  
 Thesis Advisor: John Pearson\\
-Thesis Title: Computational modeling for modern neuroethology\\
+Thesis Title: Latent Variable Modeling and Analysis of Vocalizations \\
 **M.Sc. Electrical & Computer Engineering**\\
 **Certificate in Cognitive Neuroscience**\\
 **Certificate in College Teaching**
@@ -31,6 +31,9 @@ Thesis Title: *The Effects of Observation on Visuomotor Adaptation*
 **August 2019**: **NINDS Exceptional Student Award**
 
 ## Publications
+**M. Martinez** and A. H. Williams, “Quasi monte carlo methods enable extremely low-dimensional deep
+generative models,” in Proceedings of the International Conference on Learning Representations, 2026. https://arxiv.org/abs/2601.18676.
+
 J. Qi, D. C. Schreiner, **M. Martinez**, J. Pearson, and R. Mooney, “Dual neuromodulatory dynamics underlie birdsong learning,” Nature, vol. 641, pp. 690–698, 2025.
 
 L. M. Koponen, **M. Martinez**, E. Wood, et al., “Transcranial magnetic stimulation input-output curve slope differences suggest variation in recruitment across muscle representations in primary motor cortex,” Frontiers in Human Neuroscience, vol. 18, 2024.
